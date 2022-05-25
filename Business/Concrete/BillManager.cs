@@ -24,10 +24,10 @@ namespace Business.Concrete
 
         public IResult Buy(Bill bill)
         {
-            double discount= AmountDiscount(bill);
-            bill.Amount=discount;
+            double discount = AmountDiscount(bill);
+            bill.Amount = discount;
             _billDal.Add(bill);
-            return new SuccessResult("Success");
+            return new SuccessResult(true,"Success");
         }
 
         public IDataResult<Bill> Get(int id)

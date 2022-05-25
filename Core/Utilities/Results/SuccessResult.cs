@@ -8,6 +8,9 @@ namespace Core.Utilities.Results
 {
     public class SuccessResult : Result, IResult
     {
+        public SuccessResult(bool success,string message) : base(success, message)
+        {
+        }
         public SuccessResult(string message) : base(true, message)
         {
         }
