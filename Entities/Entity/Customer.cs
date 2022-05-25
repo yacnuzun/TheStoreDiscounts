@@ -8,14 +8,20 @@ using System.Threading.Tasks;
 
 namespace Entities.Entity
 {
+    public enum CardTypes
+    {
+        Gold,
+        Silver,
+        Not
+    }
     public class Customer:IEntity
     {
         [Key]
         public int Id { get; set; }
-        public int FullName { get; set; }
-        public int Card { get; set; }
-        public int Affilation { get; set; }
-        public DateTime Üyelik { get; set; }
+        public string? FullName { get; set; }
+        public CardTypes Card { get; set; }
+        public bool Affilation { get; set; }
+        public DateTime MemberDateTime { get; set; }
 
     }
 }

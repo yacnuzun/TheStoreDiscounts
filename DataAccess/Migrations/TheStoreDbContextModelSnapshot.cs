@@ -30,8 +30,8 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
                     b.Property<int>("CurrencyCode")
                         .HasColumnType("int");
@@ -52,8 +52,8 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CardType")
-                        .HasColumnType("int");
+                    b.Property<string>("CardType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -68,21 +68,47 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Affilation")
-                        .HasColumnType("int");
+                    b.Property<bool>("Affilation")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Card")
                         .HasColumnType("int");
 
-                    b.Property<int>("FullName")
-                        .HasColumnType("int");
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Üyelik")
+                    b.Property<DateTime>("MemberDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Affilation = true,
+                            Card = 0,
+                            FullName = "Selim Acar",
+                            MemberDateTime = new DateTime(2018, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Affilation = true,
+                            Card = 1,
+                            FullName = "Selin Acar",
+                            MemberDateTime = new DateTime(2020, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Affilation = false,
+                            Card = 2,
+                            FullName = "Murat Gök",
+                            MemberDateTime = new DateTime(2021, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 #pragma warning restore 612, 618
         }

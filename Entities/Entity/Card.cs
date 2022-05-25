@@ -8,15 +8,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Entity
 {
-    public enum CardTypes
-    {
-        Gold,
-        Silver
-    }
+    
     public class Card:IEntity
     {
         [Key]
         public int Id { get; set; }
-        public CardTypes CardType { get; set; }
+        public string? CardType { get; set; }
     }
 }
