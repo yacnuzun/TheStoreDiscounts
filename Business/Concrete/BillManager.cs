@@ -24,8 +24,8 @@ namespace Business.Concrete
 
         public IResult Buy(Bill bill)
         {
-            double discount=Discount(bill);
-            bill.Amount = bill.Amount-(bill.Amount*discount);
+            double discount= AmountDiscount(bill);
+            bill.Amount=discount;
             _billDal.Add(bill);
             return new SuccessResult("Success");
         }
@@ -39,32 +39,38 @@ namespace Business.Concrete
         {
             throw new NotImplementedException();
         }
-        public double Discount(Bill bill)
+        public double AmountDiscount(Bill bill)
         {
             List<double> discount = new List<double>();
             var _buyDiscountDto = _billDal.GetAllByDiscount(bill.CustomerId);
             if(_buyDiscountDto.Affilation == true)
             {
-                discount.Add(0.1);
+                double AffilationDiscount = bill.Amount-(bill.Amount * 0.1);
+                discount.Add(AffilationDiscount);
             }
             if(_buyDiscountDto.Card == CardTypes.Gold)
             {
-                discount.Add(0.3);
+                double CardDiscount = bill.Amount - (bill.Amount * 0.3);
+                discount.Add(CardDiscount);
             }
             if (_buyDiscountDto.Card == CardTypes.Silver)
             {
-                discount.Add(0.2);
+                double CardDiscount = bill.Amount - (bill.Amount * 0.2);
+                discount.Add(CardDiscount);
             }
             if ((DateTime.Now.Year-_buyDiscountDto.MemberDateTime.Year)>=2)
             {
-                discount.Add(0.05);
+                double YearDiscount = bill.Amount - (bill.Amount * 0.2);
+                discount.Add(YearDiscount);
             }
-            else if (bill.CurrencyCode==CurrencyCodes.USD)
+            if (bill.CurrencyCode==CurrencyCodes.USD && bill.Amount>200)
             {
-                
+                double m = Math.Floor(bill.Amount / 200);
+                double CurrencyDiscpunt = bill.Amount - ( 5 * m);
+                discount.Add(CurrencyDiscpunt);
             }
             discount.Sort();
-            return discount.Last();
+            return discount.FirstOrDefault();
         }
     }
 }
