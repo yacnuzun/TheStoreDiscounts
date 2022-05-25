@@ -14,7 +14,9 @@ namespace Business.Concrete
     public class BillManager : IBillService
     {
         IBillDal _billDal;
-        ICustomerDal _customerDal;
+
+        
+
         public BillManager(IBillDal billDal)
         {
             _billDal = billDal;
@@ -23,7 +25,7 @@ namespace Business.Concrete
         public IResult Buy(Bill bill)
         {
             double discount=Discount(bill);
-            bill.Amount = bill.Amount*discount;
+            bill.Amount = bill.Amount-(bill.Amount*discount);
             _billDal.Add(bill);
             return new SuccessResult("Success");
         }
@@ -40,20 +42,20 @@ namespace Business.Concrete
         public double Discount(Bill bill)
         {
             List<double> discount = new List<double>();
-            var _customer=_customerDal.Get(c=>c.Id==bill.CustomerId);
-            if(_customer.Affilation == true)
+            var _buyDiscountDto = _billDal.GetAllByDiscount(bill.CustomerId);
+            if(_buyDiscountDto.Affilation == true)
             {
                 discount.Add(0.1);
             }
-            else if(_customer.Card == CardTypes.Gold)
+            if(_buyDiscountDto.Card == CardTypes.Gold)
             {
                 discount.Add(0.3);
             }
-            else if (_customer.Card == CardTypes.Silver)
+            if (_buyDiscountDto.Card == CardTypes.Silver)
             {
                 discount.Add(0.2);
             }
-            else if ((_customer.MemberDateTime.Year-DateTime.Now.Year)>=2)
+            if ((DateTime.Now.Year-_buyDiscountDto.MemberDateTime.Year)>=2)
             {
                 discount.Add(0.05);
             }
@@ -62,7 +64,7 @@ namespace Business.Concrete
                 
             }
             discount.Sort();
-            return discount.First();
+            return discount.Last();
         }
     }
 }

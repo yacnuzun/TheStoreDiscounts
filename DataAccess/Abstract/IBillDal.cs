@@ -11,6 +11,6 @@ namespace DataAccess.Abstract
 {
     public interface IBillDal:IEntityRepository<Bill>
     {
-        List<BuyDiscountDto> GetAllByDiscount(int id);
+        BuyDiscountDto GetAllByDiscount(int id);
     }
 }
